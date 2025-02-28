@@ -8,5 +8,5 @@ You must update the ```dir_path``` variable to your SecureCRT Sessions folder. T
 
 
 ### Requirements
-Tested on Python 3.13.2, SecureCRT 9.6.1
+Tested on Python 3.13.2, SecureCRT 9.6.1  
 Requires netmiko installed via pip
