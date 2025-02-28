@@ -1,4 +1,6 @@
 import csv
+import os
+import getpass
 from pathlib import Path
 from netmiko.exceptions import NetMikoTimeoutException
 from netmiko.exceptions import AuthenticationException
@@ -9,15 +11,21 @@ from netmiko import ConnectHandler
 # For windows use forward slashes in path
 dir_path = "C:/Users/robert.juric/DropBox/SecureCRT/Sessions"
 
-# Authentication Options
-# 
-# Script Stored Credentials
-# To use stored credentials in the script, uncomment the following section, and comment the encryption section
-#ssh_user = "dummy"
-#ssh_pass = "notagoodidea"
-#
-# Encrypted Credentials
 
+if os.path.exists("results.csv"):
+	choice = input("A results file already exists, would you like to start over? Yes/No: ")
+	if choice.lower() == "yes":
+		os.remove("results.csv")
+		print("Previous results removed, proceeding with tests.")
+	else:
+		print("Move or rename previous results before running script.")
+		raise SystemExit(0)
+else:
+	print("Proceeding with the tests.")
+
+# Authentication 
+ssh_user = input("Username: ")
+ssh_pass = getpass.getpass('Password: ')
 
 def read_sessions(sdir):
 	return_dict = dict()
@@ -43,7 +51,7 @@ def read_sessions(sdir):
 sessions = read_sessions(dir_path)
 filename = 'results.csv'
 for session, hostname in sessions.items():
-	print(f"Testing:  {hostname}")
+	print(f"Testing:  {session}")
 	device = {
 		"device_type": "cisco_ios",
 		"host":hostname,
